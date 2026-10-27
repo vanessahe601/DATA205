@@ -1,0 +1,26 @@
+
+College Majors, Earnings, and Employment in Maryland and Virginia
+Data
+I will use the 2024 American Community Survey (ACS) Public Use Microdata Sample (PUMS) person-level files for Maryland and Virginia from the U.S. Census Bureau. The primary file contains 62,777 Maryland observations and 89,404 Virginia observations. I will combine them and focus on college graduates in the eight selected majors. The main fields are annual wage and salary income (WAGP), first college major (FOD1P), sex (SEX), age (AGEP), education (SCHL), employment status (ESR), usual weekly work hours (WKHP), and state. I will also use the person survey weight (PWGTP) when calculating weighted estimates. The data are large, but some majors or male/female groups may still have small sample counts. Categories are coded, and some fields have missing or special values. Earnings are also skewed, so averages and medians may tell different stories.
+
+Research Goals and Questions
+My goal is to examine how college major and demographic characteristics are associated with earnings and employment among college graduates in Maryland and Virginia. I will answer these nine questions: 
+Which college majors have the highest median earnings in Maryland? 
+ How do median earnings differ between men and women across the eight selected majors in Maryland?
+ How does median wage vary across age groups for male and female college graduates in Maryland?
+How do earnings distributions differ between men and women in the four majors with the largest samples in Maryland?
+How does median earnings for the same majors differ between Maryland and Virginia?
+How does the gender earnings gap across majors differ between Maryland and Virginia?? 
+Is mean annual earnings significantly different between college graduates in Maryland and Virginia?
+Is state still associated with earnings after accounting for major, sex, age, education, and work hours?
+How are college major, sex, age, and state associated with the likelihood of employment among college graduates in Maryland and Virginia who are in the labor force?
+
+Tools, Methods, and Resources
+I will use R with tidyverse and ggplot2 to import, clean, summarize, and visualize the data. I will use Tableau to build an interactive dashboard. First, I will check variable codes, convert the selected major codes into readable labels, identify missing and special values, and confirm the college-graduate and labor-force filters. For wage comparisons, I will use people with valid positive wage income; for the employment model, I will compare employed and unemployed people in the labor force. I will use survey weights for descriptive estimates and show unweighted sample counts so readers can judge how much data support each result.
+Questions 1–4 will use weighted medians and descriptive comparisons within Maryland. I will show earnings by major and sex with grouped or dot plots, and use an age-group line chart to show the pattern by sex. Question 4 will focus on the four majors with the largest Maryland sample counts. Questions 5–6 will compare the same majors and gender gaps across the two states with grouped bars and a heatmap. Question 7 will use a t-test to compare mean earnings between states. Question 8 will use multiple linear regression with earnings as the outcome and major, sex, age, state, education, and work hours as predictors. Question 9 will use logistic regression, with employed versus unemployed as the outcome. I will present model estimates with clear labels and explain them as associations, not proof that a major or demographic characteristic causes an outcome. The current visualizations include an age-and-sex wage line chart, a gender-gap heatmap, and a Tableau chart comparing median wages by major and state. I will make sure that all charts use consistent major labels, units, and sample definitions before adding them to the dashboard.
+
+Risks and Mitigations
+Some major-by-sex groups may be too small for stable comparisons. I will report sample counts and leave out cells with fewer than 10 unweighted observations from detailed comparisons; if needed, I will narrow the analysis to the selected majors or the four largest groups. I will check coded and missing values before modeling and document exclusions. Survey weights improve population estimates, but the project will not fully model every feature of the ACS sample design, so I will state that limitation when interpreting statistical tests and model results. Earnings reflect only one year and do not measure total career value. My results will show patterns and associations in the data, but they will not prove cause and effect.
+
+Milestones
+I completed topic selection, initial data exploration, the project plan, and the nine research questions by October 22. From October 26 to November 6, I will finish data preparation and review the visualizations. From November 9 to 20, I will build the Tableau dashboard and run the statistical models. From November 23 to December 1, I will interpret the results and complete the report. From December 4 to 11, I will prepare the final presentation and submit the project.

@@ -1,0 +1,12 @@
+---
+title: "Exploratory Data Analysis"
+format: html
+author: Qian He
+editor: visual
+---
+
+## Analyzing College Majors, Earnings, and Employment in Maryland and Virginia
+
+#### DATA 205 Capstone in Data Science
+
+[![](images/Screenshot%202026-11-15%20at%2022.03.51.png)](https://grownandflown.com/category/off-to-college/graduation-college/)

@@ -1,0 +1,148 @@
+---
+title: "Ingestion"
+format: html
+author: Qian He
+editor: visual
+---
+
+## Analyzing College Majors, Earnings, and Employment in Maryland and Virginia
+
+#### DATA 205 Capstone in Data Science
+
+[![](images/Screenshot 2026-11-15 at 22.10.56.png)](https://www.axsource.com/blog/data-ingestion/)
+
+
+### 1.load data & remove nas
+```{r}
+library(tidyverse)
+
+# Read the dataset
+p1 <- read_csv("md.csv")
+
+# View the dataset
+View(p1)
+
+# Keep college graduates with valid wages and majors
+jobs1 <- p1 |>
+  filter(
+    !is.na(WAGP),
+    !is.na(FOD1P),
+    !is.na(SCHL),
+    !is.na(SEX),
+    SCHL == 21,
+    WAGP > 0)
+
+# Calculate median wage for each major
+major_wage <- jobs1 |>
+  group_by(FOD1P) |>
+  summarise(
+    median_wage = median(WAGP),# Calculate median wage
+    sample_size = n()) |>  # Count people in each major
+     
+  filter(sample_size >= 10) |> # Remove very small groups
+  arrange(desc(median_wage))  # Rank wages from high to low
+
+
+# View the result
+View(major_wage)
+
+#2408 electrical engineering ,2417 naval architecture and marine engineering,
+#3702 statistics and decision science, 2401 aerospace engineering ,
+#2102 computer science ,2407 computer engineering,6204 operations logistics and E-commerce
+#6212 management information systems and statistics
+
+
+
+top_major_wage <- major_wage |>
+  head(8) |>
+  mutate(Major = case_when(
+    FOD1P == 2408 ~ "Electrical Engineering",
+    FOD1P == 2417 ~ "Naval Architecture and Marine Engineering",
+    FOD1P == 3702 ~ "Statistics and Decision Science",
+    FOD1P == 2401 ~ "Aerospace Engineering",
+    FOD1P == 2102 ~ "Computer Science",
+    FOD1P == 2407 ~ "Computer Engineering",
+    FOD1P == 6204 ~ "Operations, Logistics and E-Commerce",
+    FOD1P == 6212 ~ "Management Information Systems and Statistics"
+  ))
+
+
+View(top_major_wage)
+
+
+```
+
+### 
+
+
+```{r}
+
+# Read and combine the raw datasets
+jobs_md <- read_csv("md.csv", show_col_types = FALSE)
+jobs_va <- read_csv("Virginia.csv", show_col_types = FALSE)
+
+# Apply common data cleaning
+jobs_all <- bind_rows(jobs_md, jobs_va) |>
+  mutate(
+    STATE = as.character(STATE),
+    FOD1P = as.character(FOD1P),
+    SEX = as.character(SEX),
+    ESR = as.character(ESR),
+    SCHL = as.numeric(SCHL),
+    AGEP = as.numeric(AGEP),
+    WKHP = as.numeric(WKHP),
+    WAGP = as.numeric(WAGP),
+
+    State = case_when(
+      STATE == "24" ~ "Maryland",
+      STATE == "51" ~ "Virginia",
+      TRUE ~ NA_character_
+    ),
+
+    Sex = case_when(
+      SEX == "1" ~ "Male",
+      SEX == "2" ~ "Female",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  filter(!is.na(State))
+```
+
+
+```{r}
+# Create the lookup table for the eight selected majors
+major_lookup <- tibble(
+  FOD1P = c(
+    "2417", "2401", "2408", "6212",
+    "2102", "6204", "2407", "3702"
+  ),
+  Major = c(
+    "Naval Architecture and Marine Engineering",
+    "Aerospace Engineering",
+    "Electrical Engineering",
+    "Management Information Systems and Statistics",
+    "Computer Science",
+    "Operations, Logistics and E-Commerce",
+    "Computer Engineering",
+    "Statistics and Decision Science"
+  )
+)
+
+# Prepare the common college-graduate wage dataset
+college_wage_data <- jobs_all |>
+  filter(
+    SCHL >= 21,
+    WAGP > 0,
+    !is.na(FOD1P),
+    !is.na(Sex)
+  ) |>
+  left_join(
+    major_lookup,
+    by = "FOD1P"
+  )
+
+
+
+```
+
+
